@@ -2,7 +2,6 @@
 
 defined( 'ABSPATH' ) || exit();
 
-
 if ( ! class_exists( 'WP_AJAX_Enqueue' ) ) {
 	class WP_AJAX_Enqueue {
 		/** @var null */
@@ -16,7 +15,6 @@ if ( ! class_exists( 'WP_AJAX_Enqueue' ) ) {
 		}
 
 		public function frontend_scripts() {
-			//wp_enqueue_style( 'wp-ajax-style', WP_AJAX_ASSETS . '/css/frontend.css' );
 
 			wp_enqueue_script( 'wp-ajax-script', WP_AJAX_ASSETS . '/js/frontend.js', [ 'jquery', 'wp-util' ], time(), true );
 

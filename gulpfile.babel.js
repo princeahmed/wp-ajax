@@ -78,7 +78,13 @@ const paths = {
       '!.csscomb.json',
       '!.editorconfig',
       '!.jshintrc',
-      '!.tmp'
+      '!.tmp',
+
+      '!.babelrc',
+      '!.gitattributes',
+      '!.note.md',
+      '!assets/css/**', //todo
+      '!assets/scss/**',
     ],
     dest: 'build'
   }
