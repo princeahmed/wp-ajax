@@ -16,7 +16,7 @@ if ( ! class_exists( 'WP_AJAX_Enqueue' ) ) {
 
 		public function frontend_scripts() {
 
-			wp_enqueue_script( 'wp-ajax-script', WP_AJAX_ASSETS . '/js/frontend.js', [ 'jquery', 'wp-util' ], time(), true );
+			wp_enqueue_script( 'wp-ajax-script', WP_AJAX_ASSETS . '/js/frontend.min.js', [ 'jquery', 'wp-util' ], WP_AJAX_VERSION, true );
 
 			wp_localize_script( 'wp-ajax-script', 'wpAjax', [
 				'plugin_url' => WP_AJAX_URL,

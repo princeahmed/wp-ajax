@@ -85,6 +85,7 @@ const paths = {
       '!.note.md',
       '!assets/css/**', //todo
       '!assets/scss/**',
+      '!assets/js/frontend.js',
     ],
     dest: 'build'
   }
