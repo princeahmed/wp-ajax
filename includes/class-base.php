@@ -18,6 +18,7 @@ if ( ! class_exists( 'WP_AJAX' ) ) {
 
 		public function includes(){
 			include WP_AJAX_INCLUDES.'/class-enqueue.php';
+			include WP_AJAX_INCLUDES.'/class-hooks.php';
 		}
 
 		/**

@@ -14,6 +14,9 @@ import zip from 'gulp-zip';
 import replace from 'gulp-replace';
 import rename from 'gulp-rename';
 
+const ReplaceInFileWebpackPlugin = require('replace-in-file-webpack-plugin');
+
+
 const PRODUCTION = yargs.argv.prod;
 
 const paths = {
@@ -83,9 +86,9 @@ const paths = {
       '!.babelrc',
       '!.gitattributes',
       '!.note.md',
-      '!assets/css/**', //todo
       '!assets/scss/**',
       '!assets/js/frontend.js',
+      '!assets/js/preload.js',
     ],
     dest: 'build'
   }
@@ -101,6 +104,7 @@ export const css = () => {
     .pipe(autoprefixer({cascade: false}))
     .pipe(gulpif(PRODUCTION, cleanCss({compatibility: 'ie8'})))
     .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+    .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest(paths.css.dest))
 };
 
@@ -125,7 +129,32 @@ export const js = () => {
         ]
       },
 
-      plugins: [],
+      plugins: [
+        new ReplaceInFileWebpackPlugin([
+          {
+            files: ['wp-ajax.php'],
+            rules: [
+              {
+                search: /Version:(\s*?)[a-zA-Z0-9\.\-\+]+$/m,
+                replace: 'Version:$1' + pkg.version,
+              },
+              {
+                search: /define\(\s*'WP_AJAX_VERSION',\s*'(.*)'\s*\);/,
+                replace: `define( 'WP_AJAX_VERSION', '${pkg.version}' );`,
+              },
+            ],
+          },
+          {
+            files: ['readme.txt'],
+            rules: [
+              {
+                search: /^(\*\*|)Stable tag:(\*\*|)(\s*?)[a-zA-Z0-9.-]+(\s*?)$/im,
+                replace: '$1Stable tag:$2$3' + pkg.version,
+              },
+            ],
+          },
+        ]),
+      ],
 
       externals: {
         "jquery": "jQuery"

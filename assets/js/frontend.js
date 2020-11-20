@@ -1,32 +1,44 @@
-;(function ($) {
+import wpAjaxPreload from './preload';
+
+(function ($) {
 
   const app = {
 
-    preload: `<div class="wp-ajax-preload" style="margin: -50px; position: fixed;z-index: 9999;display: flex;align-items: center;justify-content: center;width: 110%;height: 110%;background-color: rgba(0,0,0, .5);">
-<img src="${wpAjax.plugin_url}/assets/images/preload.gif" style="width: 100px;left: 50%;top: 50%;position: absolute;transform: translate(-50%, -50%);"></div>`,
+    preload: `<div id="wp-ajax-preload" style="position: fixed;width: 100%;height: 100%;background: rgba(0,0,0, .5);display: flex;align-items: center;justify-content: center;z-index: 9999;"><img src="${wpAjax.plugin_url}/assets/images/preload.gif" style="width: 100px;"></div>`,
 
     init: () => {
-
       app.hidePreload();
-
       $(document).on('click', 'a:not([href^="#"])', app.handleClick);
-
     },
 
+    /**
+     * handle the link click
+     *
+     * @param e
+     */
     handleClick: function (e) {
+
+      const url = $(this).attr('href');
 
       if (app.isExternal(this)) {
         return
       } else {
+        if (url.includes('/wp-admin/')) {
+          return;
+        }
         e.preventDefault();
       }
-
-      const url = $(this).attr('href');
 
       app.getPage(url);
 
     },
 
+    /**
+     * get the page content by ajax request
+     *
+     * @param url
+     * @param replaceURL
+     */
     getPage: (url, replaceURL = true) => {
       app.showPreload();
 
@@ -42,31 +54,46 @@
           app.replaceURL(url);
         }
 
-      }).done(() => {
-          app.hidePreload();
-        })
-        .fail((error) => {
-          console.log(error);
-          alert('Oops! AJAX Error');
-        });
+      }).fail((error) => {
+        console.log(error);
+        app.hidePreload();
+        alert('Oops! AJAX Error');
+      });
     },
 
+    /**
+     * Show ajax preloader image
+     */
     showPreload: () => {
-      if ($('.wp-ajax-preload', $(document)).length) {
-        $('.wp-ajax-preload', $(document)).fadeIn(300);
+      if ($('#wp-ajax-preload', $(document)).length) {
+        $('#wp-ajax-preload', $(document)).addClass('active');
       } else {
         $('body').prepend(app.preload);
       }
     },
 
+    /**
+     * hide ajax preloader image
+     */
     hidePreload: () => {
-      $('.wp-ajax-preload').fadeOut(300);
+      $('#wp-ajax-preload').removeClass('active');
     },
 
+    /**
+     * check whether the link is external or not
+     *
+     * @param link
+     * @returns {boolean}
+     */
     isExternal: function (link) {
       return (link.host !== window.location.host);
     },
 
+    /**
+     * replace browser url
+     *
+     * @param url
+     */
     replaceURL: (url) => {
 
       if (history.pushState) {
@@ -79,8 +106,13 @@
 
   };
 
+  wpAjaxPreload();
+  app.hidePreload();
   $(document).ready(app.init);
 
+  /**
+   * handle browser back/ next navigation
+   */
   onpopstate = function () {
     const url = location.href;
 
