@@ -1,3 +1,5 @@
+* Add new Plugin - WP Instant Page
+
 1.0.2
 ----------
 * excludes admin url

@@ -3,9 +3,9 @@
 /**
  * Plugin Name: WP Ajax
  * Plugin URI: https://wpmilitary.com/wp-ajax
- * Description: Makse website better, faster loading, more interactive & user friendly by Ajaxifying.
- * Version: 1.0.1
- * Author: WP-Military
+ * Description: Makes website better, faster, more interactive & user friendly by loading pages instantly without any refresh.
+ * Version: 1.0.2
+ * Author: WP Military
  * Author URI: https://wpmilitary.com
  * Text Domain: wp-ajax
  * Domain Path: /languages/
@@ -16,7 +16,7 @@
 defined( 'ABSPATH' ) || exit();
 
 if ( ! class_exists( 'WP_AJAX' ) ) {
-	define( 'WP_AJAX_VERSION', '1.0.1' );
+	define( 'WP_AJAX_VERSION', '1.0.2' );
 	define( 'WP_AJAX_FILE', __FILE__ );
 	define( 'WP_AJAX_PATH', dirname( WP_AJAX_FILE ) );
 	define( 'WP_AJAX_INCLUDES', WP_AJAX_PATH . '/includes' );
